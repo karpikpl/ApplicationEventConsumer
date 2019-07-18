@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "EventConsumer.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "--properties kcl.properties --execute",
+      "workingDirectory": "..\\EventConsumer"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
