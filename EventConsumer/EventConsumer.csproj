@@ -6,13 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj" />
+    <None Remove="kcl.properties" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="kcl.properties">
+    <Content Include="kcl.properties">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj" />
   </ItemGroup>
 
 </Project>
