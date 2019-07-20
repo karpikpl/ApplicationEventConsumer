@@ -2,8 +2,6 @@ FROM mcr.microsoft.com/dotnet/core/runtime:2.2-bionic AS javaBase
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends default-jre
-
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2-stretch-slim AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
@@ -19,13 +17,10 @@ WORKDIR "/src/EventConsumer.Console"
 RUN dotnet build "EventConsumer.Console.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "EventConsumer.Console.csproj" -c Release -o /app
-
-FROM base AS core
-WORKDIR /app
-COPY --from=publish /app .
+RUN dotnet publish "EventConsumer.Console.csproj" -c Release --self-contained -r linux-x64 -o /app
 
 FROM javaBase as final
 WORKDIR /app
-COPY --from=core . .
-ENTRYPOINT ["dotnet", "app/EventConsumer.Console.dll"]
+COPY "EventConsumer/kcl.properties" .
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "EventConsumer.Console.dll", "--properties", "kcl.properties", "--execute"]
